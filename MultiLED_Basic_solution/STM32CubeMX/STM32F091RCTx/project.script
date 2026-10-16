@@ -1,0 +1,5 @@
+load STM32F091RCTx
+project name STM32CubeMX
+project toolchain "MDK-ARM V5"
+project path "/home/matthew-klein/Code/STM32_Leanring/MultiLED_Basic_solution/STM32CubeMX/STM32F091RCTx"
+SetCopyLibrary "copy only"
