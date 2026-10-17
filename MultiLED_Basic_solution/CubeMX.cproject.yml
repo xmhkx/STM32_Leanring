@@ -7,6 +7,15 @@ project:
     - component: ARM::CMSIS:CORE
     - component: Device:CubeMX
 
+  add-path:
+    - ./MyDrivers/Inc
+
+  groups:
+    - group: My Drivers
+      files:
+      - file: ./MyDrivers/Inc/gpio.h
+      - file: ./MyDrivers/Src/gpio.c
+
   # List executable file formats to be generated.
   output:
     type:
