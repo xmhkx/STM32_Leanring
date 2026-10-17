@@ -26,11 +26,50 @@ takes in gpio port (from) and pin number and sets clock
 }
 
 
-void gpio_IN_OUT_init(GPIO_TypeDef *port, unsigned char pin_mode){
+void gpio_IN_OUT_init(GPIO_TypeDef *port, GPIO_PIN_MODER_MODE pin_mode, uint8_t pin_number){
 
-    
+    if(pin_number > 15){
+        //invalid pin number
+        return;
+    }
 
+    uint32_t shift_amount = (pin_number * 2); // each moder incremts by 2 bits for each pin
+    uint32_t clear_bits = 0x3; // 0b11 << shift_amount
+    uint32_t set_output_bits = 0x1; // 0b01 << shift_amount
+    uint32_t set_alt_function_bits = 0x2; // 0b10 << shift_amount
+    uint32_t set_analog_bits = 0x3; // 0b11 << shift_amount
 
+    switch(pin_mode){
+
+        case INPUT:
+            // clear specific pin bits first and sets it to input mode (00)
+            port->MODER &= ~(clear_bits << shift_amount);
+
+        break;
+
+        case OUTPUT:
+            // clear specific pin bits first
+            port->MODER &= ~(clear_bits << shift_amount);
+
+            port->MODER |= (set_output_bits << shift_amount);
+
+        break;
+
+        case ALT_FUNCTION:
+            // clear specific pin bits first
+            port->MODER &= ~(clear_bits << shift_amount);
+
+            port->MODER |= (set_alt_function_bits << shift_amount);
+            
+        break;
+
+        case ANALOG:
+            // clear specific pin bits first
+            port->MODER &= ~(clear_bits << shift_amount);
+            // set specific pin bits to analog mode (11)
+            port->MODER |= (set_analog_bits << shift_amount);
+        break;
+    }
 
 
 }
