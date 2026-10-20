@@ -31,7 +31,8 @@ void gpio_IN_OUT_init(
     uint8_t pin_number
     );
 
-void gpio_reset_pin();
+void gpio_bit_select_set(GPIO_TypeDef *port, uint8_t pin_number);
+void gpio_bit_select_reset(GPIO_TypeDef *port, uint8_t pin_number);
 
 void gpio_toggle_pin();
 

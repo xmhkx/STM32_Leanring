@@ -72,4 +72,32 @@ void gpio_IN_OUT_init(GPIO_TypeDef *port, GPIO_PIN_MODER_MODE pin_mode, uint8_t 
     }
 
 
+   void gpio_bit_select_set(GPIO_TypeDef *port, uint8_t pin_number){
+    
+    if(pin_number > 15){
+        //invalid pin number
+        return;
+    }
+
+    uint32_t set_bit = (1UL << pin_number); // create a mask for the specific pin
+
+    // Set the specific pin high
+    port->BSRR = set_bit;
+
+   }
+
+
+   void gpio_bit_select_reset(GPIO_TypeDef *port, uint8_t pin_number){
+
+
+    if(pin_number > 15){
+
+    }
+
+    uint32_t reset_bit = (1UL << (pin_number + 16)); //(reset bit is at offset 16)`
+
+    port->BSRR = reset_bit;
+
+   }
+
 }
