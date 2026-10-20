@@ -92,6 +92,7 @@ void gpio_IN_OUT_init(GPIO_TypeDef *port, GPIO_PIN_MODER_MODE pin_mode, uint8_t 
 
     if(pin_number > 15){
 
+        return;
     }
 
     uint32_t reset_bit = (1UL << (pin_number + 16)); //(reset bit is at offset 16)`
