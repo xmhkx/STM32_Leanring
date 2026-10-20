@@ -5,6 +5,10 @@
 #include <stm32f091xc.h>
 #include <stdbool.h>
 
+// this is for gpio output type function
+#define OPEN_DRAIN false
+#define PUSH_PULL true
+
 
 // GPIO_TypeDef is from stm32f091xc.h and represents a GPIO port (like GPIOA, GPIOB, etc.)
 void gpio_clock_init(GPIO_TypeDef *port);
@@ -30,11 +34,19 @@ void gpio_IN_OUT_init(
     GPIO_PIN_MODER_MODE pin_mode, 
     uint8_t pin_number
     );
+//END FOR PIN IN / OUT INIT
+
+void gpio_OUTPUT_type_init(
+    GPIO_TypeDef *port, 
+    uint8_t pin_number, 
+    bool is_open_drain);
+
+
+
 
 void gpio_bit_select_set(GPIO_TypeDef *port, uint8_t pin_number);
 void gpio_bit_select_reset(GPIO_TypeDef *port, uint8_t pin_number);
 
-void gpio_toggle_pin();
 
 
 #endif // GPIO_H

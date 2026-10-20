@@ -26,7 +26,11 @@ takes in gpio port (from) and pin number and sets clock
 }
 
 
-void gpio_IN_OUT_init(GPIO_TypeDef *port, GPIO_PIN_MODER_MODE pin_mode, uint8_t pin_number){
+void gpio_IN_OUT_init(
+    GPIO_TypeDef *port, 
+    GPIO_PIN_MODER_MODE pin_mode, 
+    uint8_t pin_number)
+    {
 
     if(pin_number > 15){
         //invalid pin number
@@ -71,7 +75,7 @@ void gpio_IN_OUT_init(GPIO_TypeDef *port, GPIO_PIN_MODER_MODE pin_mode, uint8_t 
         break;
     }
 
-
+}
    void gpio_bit_select_set(GPIO_TypeDef *port, uint8_t pin_number){
     
     if(pin_number > 15){
@@ -101,4 +105,28 @@ void gpio_IN_OUT_init(GPIO_TypeDef *port, GPIO_PIN_MODER_MODE pin_mode, uint8_t 
 
    }
 
-}
+
+
+   void gpio_OUTPUT_type_init(
+    GPIO_TypeDef *port, 
+    uint8_t pin_number, 
+    bool is_open_drain)
+    {
+        if(pin_number > 15){
+            //invalid pin number
+            return;
+        }
+
+        if(!is_open_drain){
+            // set the output type to push-pull (0)
+            port->OTYPER &= ~(1UL << pin_number);
+
+        }else{
+            // set the output type to open-drain (1)
+            port->OTYPER |= (1UL << pin_number);
+        }
+
+
+    }
+
+
