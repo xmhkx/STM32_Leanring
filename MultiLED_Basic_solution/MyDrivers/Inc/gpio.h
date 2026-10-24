@@ -30,9 +30,9 @@ void gpio_clock_init(GPIO_TypeDef *port);
 
 
 void gpio_IN_OUT_init(
-    GPIO_TypeDef *port, 
-    GPIO_PIN_MODER_MODE pin_mode, 
-    uint8_t pin_number
+    GPIO_TypeDef *port,
+    uint8_t pin_number,
+    GPIO_PIN_MODER_MODE pin_mode
     );
 //END FOR PIN IN / OUT INIT
 
@@ -47,6 +47,22 @@ void gpio_OUTPUT_type_init(
 void gpio_bit_select_set(GPIO_TypeDef *port, uint8_t pin_number);
 void gpio_bit_select_reset(GPIO_TypeDef *port, uint8_t pin_number);
 
+
+// START FOR OUTPUT SPEED INIT
+
+// config your output speed
+typedef enum{
+
+    PIN_OUTPUT_LOW_SPEED_BITS = 0b00 , // used for 
+    PIN_OUTPUT_MEDIUM_SPEED_BITS = 0b10,
+    PIN_OUTPUT_HIGH_SPEED_BITS = 0b11
+
+}PIN_OUTPUT_SPEED;
+
+void pin_output_speed_init(
+    GPIO_TypeDef *port, 
+    uint8_t pin_number, 
+    PIN_OUTPUT_SPEED pin_speed_select_bits);
 
 
 #endif // GPIO_H

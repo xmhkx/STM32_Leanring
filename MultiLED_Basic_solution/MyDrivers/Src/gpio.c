@@ -1,4 +1,5 @@
 #include "gpio.h"
+#include <stdint.h>
 
 
 void gpio_clock_init(GPIO_TypeDef *port){
@@ -28,8 +29,9 @@ takes in gpio port (from) and pin number and sets clock
 
 void gpio_IN_OUT_init(
     GPIO_TypeDef *port, 
-    GPIO_PIN_MODER_MODE pin_mode, 
-    uint8_t pin_number)
+    uint8_t pin_number,
+    GPIO_PIN_MODER_MODE pin_mode 
+    )
     {
 
     if(pin_number > 15){
@@ -129,4 +131,23 @@ void gpio_IN_OUT_init(
 
     }
 
+    void pin_output_speed_init(
+        GPIO_TypeDef *port, 
+        uint8_t pin_number, 
+        PIN_OUTPUT_SPEED pin_speed_select_bits)
+        {
+            if(pin_number > 15){
+
+                return;
+            }
+
+        uint32_t shift_amount = (pin_number * 2);
+        uint32_t clear_bits = 3UL;
+
+        port->OSPEEDR &= ~(clear_bits << shift_amount); // clears first 
+
+        port->OSPEEDR |= (pin_speed_select_bits << shift_amount); // sets pins output speed
+
+
+        }
 
