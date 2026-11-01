@@ -30,8 +30,7 @@ takes in gpio port (from) and pin number and sets clock
 void gpio_IN_OUT_init(
     GPIO_TypeDef *port, 
     uint8_t pin_number,
-    GPIO_PIN_MODER_MODE pin_mode 
-    )
+    GPIO_PIN_MODER_MODE pin_mode)
     {
 
     if(pin_number > 15){
@@ -78,7 +77,11 @@ void gpio_IN_OUT_init(
     }
 
 }
-   void gpio_bit_select_set(GPIO_TypeDef *port, uint8_t pin_number){
+
+
+
+
+void gpio_bit_select_set(GPIO_TypeDef *port, uint8_t pin_number){
     
     if(pin_number > 15){
         //invalid pin number
@@ -93,7 +96,7 @@ void gpio_IN_OUT_init(
    }
 
 
-   void gpio_bit_select_reset(GPIO_TypeDef *port, uint8_t pin_number){
+void gpio_bit_select_reset(GPIO_TypeDef *port, uint8_t pin_number){
 
 
     if(pin_number > 15){
@@ -109,7 +112,7 @@ void gpio_IN_OUT_init(
 
 
 
-   void gpio_OUTPUT_type_init(
+void gpio_OUTPUT_type_init(
     GPIO_TypeDef *port, 
     uint8_t pin_number, 
     bool is_open_drain)
@@ -131,7 +134,7 @@ void gpio_IN_OUT_init(
 
     }
 
-    void pin_output_speed_init(
+void pin_output_speed_init(
         GPIO_TypeDef *port, 
         uint8_t pin_number, 
         PIN_OUTPUT_SPEED pin_speed_select_bits)
@@ -150,4 +153,27 @@ void gpio_IN_OUT_init(
 
 
         }
+
+
+void gpio_pull_up_down(
+    GPIO_TypeDef *port, 
+    uint8_t pin_number, 
+    GPIO_PULL_UP_DOWN_TYPE gpio_pull_up_down_select_bits)
+
+    {
+
+
+    if(pin_number > 15){
+        return;
+    }
+
+    uint32_t shift_amount = (pin_number * 2);
+    uint32_t clear_bits = 3UL;
+
+    port->PUPDR &= ~(clear_bits << shift_amount);
+
+    port->PUPDR |= (gpio_pull_up_down_select_bits << shift_amount);
+    
+    }
+
 
