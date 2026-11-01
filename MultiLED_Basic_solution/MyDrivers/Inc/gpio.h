@@ -85,4 +85,12 @@ void gpio_pull_up_down(
 
 // END OF PULL UP/DOWN
 
+
+
+// START OF GPIO INPUT DATA 
+
+int gpio_INPUT_data(GPIO_TypeDef *port, uint8_t pin_number);
+
+// END OF GPIO INPUT DATA
+
 #endif // GPIO_H

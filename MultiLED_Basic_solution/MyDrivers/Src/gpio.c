@@ -159,7 +159,6 @@ void gpio_pull_up_down(
     GPIO_TypeDef *port, 
     uint8_t pin_number, 
     GPIO_PULL_UP_DOWN_TYPE gpio_pull_up_down_select_bits)
-
     {
 
 
@@ -173,7 +172,30 @@ void gpio_pull_up_down(
     port->PUPDR &= ~(clear_bits << shift_amount);
 
     port->PUPDR |= (gpio_pull_up_down_select_bits << shift_amount);
-    
+
     }
 
+int gpio_INPUT_data(GPIO_TypeDef *port, uint8_t pin_number){
+
+    if(pin_number > 15){
+        // doing this cause 1 and 0 are for output and input
+        return -1;
+        
+    }
+
+    uint32_t shift_amount = pin_number; 
+
+
+    //checks if that IDR reg is 1, since its read only
+    uint32_t HIGH_INPUT = port->IDR & (1UL << shift_amount);
+
+
+    if(HIGH_INPUT){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+
+}
 
