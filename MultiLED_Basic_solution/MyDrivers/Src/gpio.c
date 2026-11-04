@@ -257,3 +257,69 @@ int gpio_lock_status(GPIO_TypeDef *port, uint8_t pin_number){
 
 }
 
+// this is stricly used for the alternate function register
+typedef enum{
+
+    LOW_REGISTER_SELECTION = 0, // for pins 0-7
+    HIGH_REGISTER_SELECTION = 1 // for pins 8-15
+
+}GPIO_ALTERNATE_FUNCTION_TYPE;
+
+
+
+void gpio_alternate_function_init(
+    GPIO_TypeDef *port, 
+    uint8_t pin_number,
+    ALTERNATE_FUNCTION_NUMBER_SELECTION alternate_function_number)
+    {
+
+        if(pin_number > 15){
+            return;
+        }
+        
+        GPIO_ALTERNATE_FUNCTION_TYPE gpio_alternate_function_selction;
+
+        gpio_alternate_function_selction = (pin_number < 8) ? LOW_REGISTER_SELECTION : HIGH_REGISTER_SELECTION;
+
+        uint32_t clear_bits = 0xF; // 0b1111 for clearing the bits in AFR register
+        uint32_t shift_amount;
+
+       switch(gpio_alternate_function_selction){
+        case LOW_REGISTER_SELECTION:
+            // Handle low register selection
+
+            if(pin_number > 7){
+                // Invalid pin number for low register selection hanbling
+                return;
+                
+            }
+            shift_amount = pin_number * 4;//AFR is 4 bits wide per pin; from 0-
+
+            //clear the bits for the specific pin in the AFR[0] register
+            port->AFR[0] &= ~(clear_bits << shift_amount);
+
+            port->AFR[0] |= (alternate_function_number << shift_amount);
+
+            break;
+
+        case HIGH_REGISTER_SELECTION:
+           
+
+            if(pin_number < 8){
+                
+                return;
+            }
+        
+            shift_amount = (pin_number - 8) * 4;//AFR[1] is pins 8-15; and 4 bit wide per pin
+            
+
+            //clear the bits for the specific pin in the AFR[1] register
+
+            port->AFR[1] &= ~(clear_bits << shift_amount);
+
+            port->AFR[1] |= (alternate_function_number << shift_amount);
+            
+            break;
+       }
+
+    }

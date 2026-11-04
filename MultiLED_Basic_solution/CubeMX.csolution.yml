@@ -31,6 +31,10 @@ solution:
         - set:
           images:
             - project-context: CubeMX.Debug
+          debugger:
+            name: ST-Link@pyOCD
+            clock: 4000000
+            protocol: swd
   build-types:
     - type: Debug
       debug: on
