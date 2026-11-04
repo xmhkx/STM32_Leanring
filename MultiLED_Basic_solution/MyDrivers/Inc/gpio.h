@@ -93,4 +93,13 @@ int gpio_INPUT_data(GPIO_TypeDef *port, uint8_t pin_number);
 
 // END OF GPIO INPUT DATA
 
+
+// START OF GPIO LOCKING
+
+void gpio_lock(GPIO_TypeDef *port, uint8_t pin_number);
+
+int gpio_lock_status(GPIO_TypeDef *port, uint8_t pin_number);
+
+// END OF GPIO LOCKING
+
 #endif // GPIO_H

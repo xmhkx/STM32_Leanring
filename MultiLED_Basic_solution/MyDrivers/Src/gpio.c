@@ -199,3 +199,61 @@ int gpio_INPUT_data(GPIO_TypeDef *port, uint8_t pin_number){
 
 }
 
+//only word access(32-bit long) is allowed during this locking sequence.
+
+void gpio_lock(GPIO_TypeDef *port, uint8_t pin_number){
+
+    if(pin_number > 15){
+        return;
+
+    }
+
+    uint32_t shift_amount = pin_number;
+    uint32_t lock_key_bit = (1UL << 16); // bit 16 is the lock key
+    
+    // from data sheet; HAS TO DO THIS: 
+    /*
+
+    LOCK key write sequence:
+    WR LCKR[16] = 1 + LCKR[15:0]
+    WR LCKR[16] = 0 + LCKR[15:0]
+    WR LCKR[16] = 1 + LCKR[15:0]
+    RD LCKR    
+    
+    */
+
+    // set the lock key bit and the pin bit 1st iteration of three
+    port->LCKR = lock_key_bit | (1UL << shift_amount); 
+
+    // clear the lock key bit and set the pin bit 2nd iteration of three
+    port->LCKR = (1UL << shift_amount);
+
+    // set the lock key bit and the pin bit 3rd iteration of three
+    port->LCKR = lock_key_bit | (1UL << shift_amount);
+
+    //final read to confirm the lock is active
+    uint32_t lock_status = port->LCKR;
+
+}
+
+
+int gpio_lock_status(GPIO_TypeDef *port, uint8_t pin_number){
+
+    if(pin_number > 15){
+        return -1;
+    }
+
+    uint32_t shift_amount = pin_number;
+
+    // check if the lock bit for the specific pin is set
+    uint32_t lock_bit_status = port->LCKR & (1UL << shift_amount);
+
+    if(lock_bit_status){
+        return 1; // locked
+    } else {
+        return 0; // not locked
+    }
+
+
+}
+
