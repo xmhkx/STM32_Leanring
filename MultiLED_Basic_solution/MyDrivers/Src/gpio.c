@@ -175,6 +175,25 @@ void gpio_pull_up_down(
 
     }
 
+
+void gpio_OUTPUT_data(GPIO_TypeDef *port, uint8_t pin_number, bool output_high){
+
+    if(pin_number > 15){
+        return;
+    }
+
+    uint32_t shift_amount = pin_number;
+
+    if(output_high){
+        port->ODR |= (1UL << shift_amount); // set the output data register bit high
+    }else {
+        port->ODR &= ~(1UL << shift_amount); // set the output data register bit low
+    }
+
+}
+
+
+
 int gpio_INPUT_data(GPIO_TypeDef *port, uint8_t pin_number){
 
     if(pin_number > 15){
