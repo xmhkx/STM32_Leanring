@@ -304,7 +304,7 @@ void gpio_alternate_function_init(
 
         case HIGH_REGISTER_SELECTION:
            
-
+ 
             if(pin_number < 8){
                 
                 return;
@@ -318,8 +318,24 @@ void gpio_alternate_function_init(
             port->AFR[1] &= ~(clear_bits << shift_amount);
 
             port->AFR[1] |= (alternate_function_number << shift_amount);
-            
+
             break;
        }
 
+    }
+
+
+    void gpio_port_pin_reset(GPIO_TypeDef *port, uint8_t pin_number){
+
+        if(pin_number > 15){
+            
+            return;
+        }
+
+        uint32_t clear_bits = 0x1;
+        uint32_t shift_amount = pin_number;
+
+        port->BRR &= ~(clear_bits << shift_amount);
+
+        port->BRR = (1UL << shift_amount); // 1 writes to BRR reseting the pin
     }

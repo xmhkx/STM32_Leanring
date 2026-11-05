@@ -124,4 +124,11 @@ void gpio_alternate_function_init(
 
 // END OF GPIO ALTERNATE FUNCTION
 
+
+// START OF GPIO BIT PORT RESET
+
+void gpio_port_pin_reset(GPIO_TypeDef *port, uint8_t pin_number);
+
+// END OF GPIO BIT PORT RESET
+
 #endif // GPIO_H
